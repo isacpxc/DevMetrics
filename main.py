@@ -20,9 +20,21 @@ async def get_tech(tech_name: str):
     }
     
     url = "https://api.github.com/search/repositories"
-    try:
-        res = await httpx.AsyncClient().get(url=f"{url}?q={tech_name}", headers=headers)
-    except Exception as e:
-        return {"error": e}
+
     
-    return res.json()
+    try:
+        async with httpx.AsyncClient() as client:
+            params = {
+                "q": f"topic:{tech_name}"
+            }
+            
+            res = await client.get(url=url, params=params, headers=headers)
+            
+            res.raise_for_status() 
+            return res.json()
+    except httpx.HTTPStatusError as e:  
+        return {"error": "API fail connection", "status": e.response.status_code}
+    except httpx.RequestError as e:
+        return {"error": "network error", "message": e}
+    
+    
