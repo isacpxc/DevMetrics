@@ -25,7 +25,8 @@ async def get_tech(tech_name: str):
     try:
         async with httpx.AsyncClient() as client:
             params = {
-                "q": f"topic:{tech_name}"
+                "q": f"topic:{tech_name}",
+                "sort": "stars"
             }
             
             res = await client.get(url=url, params=params, headers=headers)
