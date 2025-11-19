@@ -1,0 +1,11 @@
+services:
+  web:
+    build:
+      context: .
+    ports:
+      - "8123:8000"
+    environment:
+      - GITHUB_TOKEN_ACCESS=${GITHUB_TOKEN_ACCESS}
+
+  redis:
+    image: "redis:8.2.3-alpine3.22"
